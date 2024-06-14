@@ -15,6 +15,7 @@ int countRow (vector<int> &row, int n){
     }
     return counter;
 }
+
 //Wczytuje i tworzy macierz sąsiedztwa 
 void readArray(int n){
     if(n>0){
@@ -22,31 +23,27 @@ void readArray(int n){
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 matrix[i][j] = (int)(getchar()-'0');
-                //printf("%d ",matrix[i][j]);
             }
-           // printf("\n");
         }
     }
 }
 
 void countLeaves(int n){
-    
-
 
     set<int> notRoot;
+    set<int> root;
     set<int> branches;
-    //osobny set dla lisci i galezi
-    //dla setu galezi sprawdzac ilosc bananananana
 
     //dla kazdego wiersza w macierzy
     int leafCounter=0;
     int rowCounter=0;
     for(vector<int> row: matrix) {
         
+        //jak jest lisciem
         if(countRow(row,n)==1){
             leafCounter++;
             notRoot.insert(rowCounter);
-            //dla kazdego elementu w wierszu ktory jest lisciem
+            //dla kazdego elementu w lisciu
             int columnCounter=0;
             for(int element : row){
                 if(element==1){
@@ -60,11 +57,8 @@ void countLeaves(int n){
     rowCounter++;
     }
 
-    
     //tworzymy tablice od 0 do n
-    //szukamy roota dla n>2 kiedy istnieje galaz ktora nie jest rootem
-
-    set<int> root;
+    //szukamy roota dla n>2 kiedy istnieje galaz ktora nie jest rootem   
     for (int i=0;i<n;i++){
         root.insert(i);
     }
@@ -75,14 +69,28 @@ void countLeaves(int n){
     if(n>2 && root.size()==0){
         root=branches;
     }
-    // for(int element :root){
-    //     printf("NASZ ROOT ID TO:%d \n",element);     
-    // }
-    
 
- 
+
+    //Sprawdzanie czy bananaTree - rowna ilosc jedynek na galeziach
+    bool bananaTree = false;
+    int firstBranchSum = countRow(matrix[*branches.begin()],n);
+    if(branches.size()!=1){
+
+    }
+    for(int branch : branches){
+        if(firstBranchSum==countRow(matrix[branch],n)){
+            bananaTree = true;
+        }
+        else{
+            bananaTree = false;
+        }
+    }
+
     //WYPISANIE WYNIKU
-    if(root.size()==0 && n==2){
+    if(!bananaTree){
+        printf("0 bananas :(\n");
+    }
+    else if(root.size()==0 && n==2){
         printf("%d bananas :)\n",leafCounter);
     }
     else if(root.size()!=1){
@@ -94,8 +102,6 @@ void countLeaves(int n){
     else{
         printf("%d bananas :(\n",leafCounter);   
     }
-    // printf("branches size%d \n",branches.size());
-    // printf("notRoot size%d \n",notRoot.size());
 }
 
 int main() {
@@ -112,11 +118,6 @@ int main() {
         getchar();
 
         readArray(n);
-
-        //szuka roota zwraca jego id
-        //searchForRoot(n);
-        
-        
         countLeaves(n);
         
         lines--;
