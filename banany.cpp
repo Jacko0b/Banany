@@ -66,7 +66,7 @@ void countLeaves(int n){
     for(int element: notRoot) {
         root.erase(element);
     }
-    if(n>2 && root.size()==0){
+    if(n>2 && root.size()==0 && branches.size()==1){
         root=branches;
     }
 
@@ -85,7 +85,7 @@ void countLeaves(int n){
             bananaTree = false;
         }
     }
-
+    //ZLE WYPISUJE JEZELI MAMY DRZEWO Z GLEBOKOSCIA WIECEJ NIZ 3
     //WYPISANIE WYNIKU
     if(!bananaTree){
         printf("0 bananas :(\n");
